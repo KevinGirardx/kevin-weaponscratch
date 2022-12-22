@@ -1,3 +1,5 @@
+!![image](https://user-images.githubusercontent.com/89563654/209227794-4f25f06e-fd8e-4cc0-bda3-f16c8f77dc58.png)
+
 # Dependencies
 
 - qbcore
@@ -23,6 +25,7 @@ just above both of them you need to add the following:
                 }
 ```
 so it should look something like this i have highlighted the added snippets so you can better see:
-https://cdn.discordapp.com/attachments/907789876177555495/1055593822178005082/image.png
+!![image](https://user-images.githubusercontent.com/89563654/209227845-0270fc8e-f1eb-490b-acd5-8f6a05955fd0.png)
+
 
 - Start resource in your server.cfg by using "ensure kevin-weaponscratch" without the quotes
