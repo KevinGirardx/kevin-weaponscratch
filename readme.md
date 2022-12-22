@@ -32,5 +32,5 @@ so it should look something like this i have highlighted the added snippets so y
 
 - Start resource in your server.cfg by using "ensure kevin-weaponscratch" without the quotes
 
-#Credits
+# Credits
 - https://github.com/pushkart2
