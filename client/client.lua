@@ -9,8 +9,8 @@ AddEventHandler('onResourceStop', function(resource)
 end)
 
 CreateThread(function ()
-    local coords = Config.Properties.toolboxlocation
-    local hash = Config.Properties.toolboxhash
+    local coords = vector4(726.12, -1074.31, 28.31, 183.06)
+    local hash = `prop_toolchest_05`
     QBCore.Functions.LoadModel(hash)
     ScratchTable = CreateObject(hash, coords.x, coords.y, coords.z -1, true, true, true)
     SetEntityHeading(ScratchTable, coords.w)
