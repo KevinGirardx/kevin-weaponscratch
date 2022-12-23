@@ -21,7 +21,7 @@ $(".item-info-description").html(
 ```
 just above both of them you need to add the following:
 ```lua
- if (item.info.isScratched == true) then
+ if (itemData.info.isScratched == true) then
                 {
                     itemData.info.serie = "Scratched";
                 }
