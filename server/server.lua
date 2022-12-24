@@ -16,7 +16,7 @@ RegisterNetEvent('kevin-weaponscratch:scratchserial', function (data)
             Wait(400)
 
             local info = {}
-            info.serie = "Scratched"
+            info.serie = oldSerial
             info.isScratched = true
             info.quality = oldQuality
             info.ammo = oldAmmo
