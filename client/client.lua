@@ -8,6 +8,42 @@ AddEventHandler('onResourceStop', function(resource)
     end
 end)
 
+local function ShowWeapons()
+    local playeritems = QBCore.Functions.GetPlayerData().items
+    if IsPedArmed(cache.ped, 7) then
+        TriggerEvent('weapons:ResetHolster')
+        SetCurrentPedWeapon(cache.ped, `WEAPON_UNARMED`, true)
+    end
+
+    local resgisteredMenu = {
+        id = 'kevin-weaponscratch',
+        title = 'Available Weapons',
+        options = {}
+    }
+    local options = {}
+    for _, v in pairs(playeritems) do
+        if QBCore.Shared.Items[v.name]["type"] == 'weapon' and v.info.serie ~= 'Scratched' then
+            options[#options+1] = {
+                title = QBCore.Shared.Items[v.name]["label"],
+                description = 'Scratch Weapon Serial',
+                metadata = {
+                    {label = 'Serial', value = v.info.serie},
+                    {label = 'Slot', value = v.slot},
+                },
+                serverEvent = 'kevin-weaponscratch:scratchserial',
+                args = {
+                    weapon = v.name,
+                    slot = v.slot
+                }
+            }
+        end
+    end
+
+    resgisteredMenu["options"] = options
+    lib.registerContext(resgisteredMenu)
+    lib.showContext('kevin-weaponscratch')
+end
+
 CreateThread(function ()
     local coords = vector4(726.12, -1074.31, 28.31, 183.06)
     local hash = `prop_toolchest_05`
@@ -29,47 +65,3 @@ CreateThread(function ()
         distance = 2.0
     })
 end)
-
-function ShowWeapons()
-    local player = PlayerPedId()
-    local playeritems = QBCore.Functions.GetPlayerData().items
-    if IsPedArmed(player, 7) then
-        SetCurrentPedWeapon(player, `WEAPON_UNARMED`, true)
-    end
-    local header = {
-        {
-            isMenuHeader = true,
-            icon = "fas fa-bars",
-            header = "Available Weapons",
-            txt = "",
-        }
-    }
-    for k, v in pairs(playeritems) do
-        if QBCore.Shared.Items[v.name]["type"] == 'weapon' then
-            header[#header+1] = {
-                header = QBCore.Shared.Items[v.name]["label"],
-                txt = 'Inventory Slot: '..v.slot..'<br><span style="color:#64e887; font-weight: bold;">Serial: '..v.info.serie.."<br><span style='color:#e86464; font-weight: bold; text-transform: uppercase;'>Scratch Serial",
-                icon = 'fas fa-circle',
-                params = {
-                    isServer = true,
-                    event = 'kevin-weaponscratch:scratchserial',
-                    args = {
-                        weapon = v.name,
-                        ammo = v.info.ammo,
-                        quality = v.info.quality,
-                        serial = v.info.serie,
-                        slot = v.slot
-                    }
-                }
-            }
-        end
-    end
-    header[#header+1] = {
-        header = "Close Drawer",
-        icon = "fas fa-xmark",
-        params = {
-            event = "qb-menu:closeMenu",
-        }
-    }
-    exports['qb-menu']:openMenu(header)
-end
