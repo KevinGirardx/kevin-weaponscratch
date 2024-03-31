@@ -2,6 +2,7 @@
 
 - qbcore
 - qb-target
+- qb-inventory OR ox_inventory
 - ox_lib https://github.com/overextended/ox_lib/releases/tag/v2.19.1
 
 * Add this to qb-core > shared > items.lua
