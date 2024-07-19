@@ -1,6 +1,7 @@
 local QBCore = exports['qb-core']:GetCoreObject()
 
 local ScratchTable = nil
+local usingox = GetResourceState('ox_inventory') == 'started'
 
 AddEventHandler('onResourceStop', function(resource)
     if resource == GetCurrentResourceName() then
@@ -9,7 +10,6 @@ AddEventHandler('onResourceStop', function(resource)
 end)
 
 local function ShowWeapons()
-    local playeritems = QBCore.Functions.GetPlayerData().items
     if IsPedArmed(cache.ped, 7) then
         TriggerEvent('weapons:ResetHolster')
         SetCurrentPedWeapon(cache.ped, `WEAPON_UNARMED`, true)
@@ -21,21 +21,47 @@ local function ShowWeapons()
         options = {}
     }
     local options = {}
-    for _, v in pairs(playeritems) do
-        if QBCore.Shared.Items[v.name]["type"] == 'weapon' and v.info.serie ~= 'Scratched' then
-            options[#options+1] = {
-                title = QBCore.Shared.Items[v.name]["label"],
-                description = 'Scratch Weapon Serial',
-                metadata = {
-                    {label = 'Serial', value = v.info.serie},
-                    {label = 'Slot', value = v.slot},
-                },
-                serverEvent = 'kevin-weaponscratch:scratchserial',
-                args = {
-                    weapon = v.name,
-                    slot = v.slot
+
+    if usingox then
+        local playeritems = exports.ox_inventory:GetPlayerItems()
+        local items = exports.ox_inventory:Items()
+
+        for _, v in pairs(playeritems) do
+            if items[v.name] and items[v.name].weapon and v.metadata.serial ~= 'Scratched' then
+                options[#options+1] = {
+                    title = items[v.name]["label"],
+                    description = 'Scratch Weapon Serial',
+                    metadata = {
+                        {label = 'Serial', value = v.metadata.serial},
+                        {label = 'Slot', value = v.slot},
+                    },
+                    serverEvent = 'kevin-weaponscratch:scratchserial',
+                    args = {
+                        weapon = v.name,
+                        slot = v.slot
+                    }
                 }
-            }
+            end
+        end
+    else
+        local playeritems = QBCore.Functions.GetPlayerData().items
+
+        for _, v in pairs(playeritems) do
+            if QBCore.Shared.Items[v.name]["type"] == 'weapon' and v.info.serie ~= 'Scratched' then
+                options[#options+1] = {
+                    title = QBCore.Shared.Items[v.name]["label"],
+                    description = 'Scratch Weapon Serial',
+                    metadata = {
+                        {label = 'Serial', value = v.info.serie},
+                        {label = 'Slot', value = v.slot},
+                    },
+                    serverEvent = 'kevin-weaponscratch:scratchserial',
+                    args = {
+                        weapon = v.name,
+                        slot = v.slot
+                    }
+                }
+            end
         end
     end
 
